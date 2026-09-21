@@ -1,6 +1,5 @@
-import Image from "next/image";
 import { ArrowRight, ArrowUpRight, MapPin } from "lucide-react";
-import { Reveal } from "./motion";
+import { Reveal, TextReveal } from "./motion";
 
 export function About() {
   return (
@@ -22,11 +21,13 @@ export function About() {
           </div>
           <div>
             <h2 id="about-title">
-              Rooted in nature.
-              <br />
-              Connected to the world.
-              <br />
-              <span className="muted">Made for what’s next.</span>
+              <TextReveal
+                lines={[
+                  { text: "Rooted in nature." },
+                  { text: "Connected to the world." },
+                  { text: "Made for what’s next.", className: "muted" },
+                ]}
+              />
             </h2>
             <div className="about-bottom">
               <p>
@@ -45,43 +46,6 @@ export function About() {
   );
 }
 
-export function StudentLife() {
-  return (
-    <section
-      className="student-life"
-      id="student-life"
-      aria-labelledby="life-title"
-    >
-      <Image
-        src="/images/students.webp"
-        alt="Students sharing a study session at KIU"
-        fill
-        sizes="100vw"
-      />
-      <div className="life-shade" />
-      <Reveal className="shell life-content">
-        <p className="eyebrow">
-          <span className="section-index">05 /</span> THE DAYS YOU’LL REMEMBER
-        </p>
-        <h2 id="life-title">
-          More than your degree.
-          <br />
-          <span>Your next chapter.</span>
-        </h2>
-        <p>
-          The people you meet. The ideas you share.
-          <br />
-          The person you become along the way.
-        </p>
-        <a className="text-link light-link" href="#campus">
-          Find your place <ArrowRight size={18} />
-        </a>
-      </Reveal>
-      <span className="life-caption">LIFE, IN GOOD COMPANY.</span>
-    </section>
-  );
-}
-
 export function CallToAction() {
   return (
     <section className="cta section-pad" id="apply" aria-labelledby="cta-title">
@@ -89,9 +53,12 @@ export function CallToAction() {
         <Reveal>
           <p className="eyebrow">YOUR NEXT CHAPTER IS WAITING</p>
           <h2 id="cta-title">
-            Your future
-            <br />
-            <span>starts here.</span>
+            <TextReveal
+              lines={[
+                { text: "Your future" },
+                { text: "starts here.", className: "cta-title-accent" },
+              ]}
+            />
           </h2>
           <div className="actions">
             <a className="button button-light" href="#programs">

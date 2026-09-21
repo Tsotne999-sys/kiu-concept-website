@@ -41,22 +41,25 @@ export function Campus() {
               key={s.title}
               className={`campus-cell campus-cell-${i}`}
               delay={(i % 3) * 0.06}
+              variant="image"
             >
               <button
                 className="campus-card"
                 onClick={() => setSelected(i)}
                 aria-label={`View ${s.title}`}
               >
-                <Image
-                  src={s.image}
-                  alt={s.alt}
-                  fill
-                  sizes={
-                    i === 0 || i === 5
-                      ? "(max-width: 640px) 100vw, 60vw"
-                      : "(max-width: 640px) 100vw, 35vw"
-                  }
-                />
+                <span className="campus-photo">
+                  <Image
+                    src={s.image}
+                    alt={s.alt}
+                    fill
+                    sizes={
+                      i === 0 || i === 5
+                        ? "(max-width: 640px) 100vw, 60vw"
+                        : "(max-width: 640px) 100vw, 35vw"
+                    }
+                  />
+                </span>
                 <span className="campus-shade" />
                 {s.placeholder && (
                   <span className="image-note">ILLUSTRATIVE IMAGE</span>

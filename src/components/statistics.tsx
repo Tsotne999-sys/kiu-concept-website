@@ -1,33 +1,63 @@
 "use client";
-
-import { useEffect, useRef, useState } from "react";
-import { animate, useInView, useReducedMotion } from "framer-motion";
+import { useEffect, useRef } from "react";
+import {
+  animate,
+  motion,
+  useInView,
+  useMotionValue,
+  useReducedMotion,
+  useTransform,
+} from "framer-motion";
 import { DEMO_STATISTICS } from "@/lib/content";
+import { Reveal } from "./motion";
 
-function Counter({ value, suffix }: { value: number; suffix: string }) {
+function Counter({
+  value,
+  suffix,
+  index,
+}: {
+  value: number;
+  suffix: string;
+  index: number;
+}) {
   const ref = useRef<HTMLSpanElement>(null);
-  const visible = useInView(ref, { once: true });
+  const visible = useInView(ref, { once: true, amount: 0.7 });
   const reduced = useReducedMotion();
-  const [current, setCurrent] = useState(value);
+  const count = useMotionValue(value);
+  const formatted = useTransform(count, (n) =>
+    Math.round(n).toLocaleString("en-US"),
+  );
   useEffect(() => {
-    if (!visible || reduced) return;
-    const control = animate(0, value, {
-      duration: 1.8,
+    if (reduced) {
+      count.set(value);
+      return;
+    }
+    if (!visible) return;
+    count.set(0);
+    const control = animate(count, value, {
+      duration: 1.9,
+      delay: index * 0.12,
       ease: [0.22, 1, 0.36, 1],
-      onUpdate: (n) => setCurrent(Math.round(n)),
     });
-    return control.stop;
-  }, [visible, reduced, value]);
+    return () => control.stop();
+  }, [visible, reduced, value, index, count]);
   return (
-    <span ref={ref} aria-label={`${value.toLocaleString("en-US")}${suffix}`}>
-      <span aria-hidden="true">
-        {current.toLocaleString("en-US")}
+    <span ref={ref} className="counter">
+      <span className="sr-only">
+        {value.toLocaleString("en-US")}
+        {suffix}, demo figure
+      </span>
+      <span className="counter-reserve" aria-hidden="true">
+        {value.toLocaleString("en-US")}
+        <em>{suffix}</em>
+      </span>
+      <span className="counter-live" aria-hidden="true">
+        <motion.span>{formatted}</motion.span>
         <em>{suffix}</em>
       </span>
     </span>
   );
 }
-
 export function Statistics() {
   return (
     <section className="statistics" aria-labelledby="stats-title">
@@ -39,13 +69,17 @@ export function Statistics() {
           <span className="demo-label">DEMO DATA · NOT KIU STATISTICS</span>
         </div>
         <div className="stats-grid">
-          {DEMO_STATISTICS.map((stat) => (
-            <div className="stat" key={stat.label}>
+          {DEMO_STATISTICS.map((stat, index) => (
+            <Reveal className="stat" key={stat.label} delay={index * 0.08}>
               <div className="stat-number">
-                <Counter value={stat.value} suffix={stat.suffix} />
+                <Counter
+                  value={stat.value}
+                  suffix={stat.suffix}
+                  index={index}
+                />
               </div>
               <p>{stat.label}</p>
-            </div>
+            </Reveal>
           ))}
         </div>
         <p className="stats-note">

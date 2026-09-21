@@ -32,6 +32,14 @@ export function Programs() {
       "--mouse-y",
       `${event.clientY - rect.top}px`,
     );
+    event.currentTarget.style.setProperty(
+      "--tilt-x",
+      `${-((event.clientY - rect.top) / rect.height - 0.5) * 2.5}deg`,
+    );
+    event.currentTarget.style.setProperty(
+      "--tilt-y",
+      `${((event.clientX - rect.left) / rect.width - 0.5) * 2.5}deg`,
+    );
   };
   return (
     <section
@@ -70,6 +78,10 @@ export function Programs() {
                 <button
                   className={`program-card ${i === 0 ? "featured" : ""}`}
                   onMouseMove={move}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.setProperty("--tilt-x", "0deg");
+                    e.currentTarget.style.setProperty("--tilt-y", "0deg");
+                  }}
                   onClick={() => setSelected(i)}
                   aria-label={`Explore ${p.title}`}
                 >

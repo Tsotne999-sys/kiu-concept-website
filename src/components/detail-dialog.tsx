@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useId, useRef, type ReactNode } from "react";
 import { X } from "lucide-react";
 
 export function DetailDialog({
@@ -15,6 +15,7 @@ export function DetailDialog({
   children: ReactNode;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
+  const titleId = useId();
   useEffect(() => {
     const dialog = ref.current;
     if (!dialog || !open) return;
@@ -32,7 +33,7 @@ export function DetailDialog({
     <dialog
       ref={ref}
       className="detail-dialog"
-      aria-labelledby="detail-title"
+      aria-labelledby={titleId}
       onCancel={onClose}
       onClick={(e) => {
         if (e.target === ref.current) {
@@ -56,7 +57,7 @@ export function DetailDialog({
       </button>
       <div className="dialog-content">
         <p className="eyebrow">KIU / CONCEPT EXPLORER</p>
-        <h2 id="detail-title">{title}</h2>
+        <h2 id={titleId}>{title}</h2>
         {children}
       </div>
     </dialog>
