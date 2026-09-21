@@ -1,80 +1,123 @@
 # KIU — Shape the Future
 
-A cinematic, independent portfolio concept for Kutaisi International University. This is **not the official KIU website** and is not affiliated with or endorsed by KIU.
+A cinematic university website concept built with Next.js, React, and TypeScript.
+
+> **Independent portfolio project.** This is not the official Kutaisi International University (KIU) website. It is not affiliated with, commissioned by, or endorsed by KIU.
+
+## Overview
+
+This project explores a modern digital identity for a university in Kutaisi, Georgia, combining campus photography, a dark green and cream palette, editorial typography, and restrained interaction design. The finished V2 preserves the original visual direction while refining motion, accessibility, and mobile layouts.
+
+The website presents an introduction, academic areas, an interactive Computer Science feature, a campus gallery, demo statistics, student life, and a final call to action. It is a portfolio demonstration, not an admissions service or a verified university information source.
+
+## Technologies
+
+| Technology                    | Purpose                                                     |
+| ----------------------------- | ----------------------------------------------------------- |
+| Next.js 16 App Router         | Page composition, metadata, and static export               |
+| React 19 and TypeScript       | Typed, reusable interface components                        |
+| Tailwind CSS 4 and custom CSS | Styling pipeline, design tokens, and responsive layouts     |
+| Framer Motion                 | Viewport reveals, parallax, topic transitions, and counters |
+| Lucide React                  | Interface icons                                             |
+| ESLint and Prettier           | Code quality and consistent formatting                      |
+| pnpm                          | Dependency management and reproducible installs             |
+
+Exact dependency versions are recorded in `package.json` and `pnpm-lock.yaml`. GSAP is not required; the interactions use CSS and Framer Motion.
+
+## Key features
+
+- Cinematic hero with staggered headline entrance and subtle desktop pointer and scroll movement.
+- Transparent-to-glass navigation, active-section indicators, and an accessible mobile menu.
+- Interactive academic cards, with Computer Science visually emphasized.
+- Keyboard-operable computing topic tabs and a subtly animated illustrative code interface.
+- Campus image reveals, hover interactions, and native detail dialogs.
+- Student-life photography with responsive cropping and selective parallax.
+- Animated counters explicitly labeled as demo data.
+- Responsive layouts, visible keyboard focus, Escape dismissal, and dialog focus restoration.
+- Reduced-motion support and primary content that remains visible without JavaScript.
+- Local WebP images, a self-hosted font, lazy-loaded secondary photography, and static hosting support.
 
 ## Run locally
 
-Requires Node.js 20.9+ and pnpm (the locked tool version is in `package.json`).
+### Prerequisites
+
+Install Node.js 20.9 or newer and the pnpm version listed in the `packageManager` field of `package.json`.
+
+### Setup
 
 ```sh
+git clone https://github.com/Tsotne999-sys/kiu-concept-website.git
+cd kiu-concept-website
 pnpm install --frozen-lockfile
 pnpm dev
 ```
 
-Open http://127.0.0.1:3000.
+Open [http://127.0.0.1:3000](http://127.0.0.1:3000).
+
+No database, environment file, API key, or external service is required to run the website. Next.js generates `next-env.d.ts` locally during development or a build.
+
+### Production preview
 
 ```sh
-pnpm typecheck
-pnpm lint
-pnpm format:check
 pnpm build
 pnpm start
 ```
 
-`pnpm build` creates a static export in `out/`. `pnpm start` serves that export. Stop the development server before starting the production preview on the same port. You can deploy `out/` to a static host; it requires no database, environment variables or API keys.
+The build produces a static export in `out/`. Stop the development server first, since both commands use port 3000. The exported files can be served by a static hosting provider.
 
-## Architecture and learning notes
+### Quality checks
 
-- **Next.js App Router** supplies routing, metadata and static generation. `src/app/page.tsx` composes the page from section components. `layout.tsx` defines global metadata, styles, font preloading and the skip link. The static landing page renders directly; its CSS entrance sequence provides the loading transition without a blocking spinner.
-- **React + TypeScript** keep component contracts explicit. Static editorial sections remain Server Components. Only interactive components have `"use client"`.
-- **Tailwind CSS 4** provides the CSS pipeline, reset and utility layer. `globals.css` defines the art direction, named layout classes, media queries, and shared design tokens. Complex editorial styling stays readable in one stylesheet.
-- **Framer Motion** handles viewport reveals, the hero's scroll-linked image transform, topic transitions and number counters. Scroll values update transforms without React rendering on every scroll event. GSAP is intentionally omitted because these interactions do not need a second animation engine.
-- **V2 motion** uses a staggered CSS headline entrance, spring-smoothed desktop pointer movement, once-per-visit section and image reveals, and restrained photography parallax. `useAmbientMotion` switches off continuous photo movement for touch screens and reduced-motion preferences. The code interface uses finite line/caret animations rather than a permanent animation loop.
-- **Keyboard interaction** includes a mobile menu with inert closed links, active-section indicators, and a computing tablist supporting arrow keys, Home and End. Counters update MotionValues directly and reserve their final width to avoid layout shifts.
-- **Lucide** supplies consistent, lightweight SVG icons.
-- **Native `<dialog>`** provides modal semantics, focus trapping and Escape support. `DetailDialog` restores focus to the opening control and locks background scrolling.
-- Images are locally served **WebP** assets. The hero is prioritized; below-the-fold images are lazy-loaded. The Manrope font is self-hosted to avoid external font requests during page load.
+```sh
+pnpm lint
+pnpm typecheck
+pnpm format:check
+```
 
-## Files to start with
+On a fresh checkout, run `pnpm dev` or `pnpm build` once before the standalone type check so Next.js can generate its types. Use `pnpm format` to format application source.
+
+## Project structure
 
 ```text
 src/
   app/
-    page.tsx              # Section composition
-    layout.tsx            # Metadata, global styles, skip link
-    globals.css           # Theme, editorial layouts, responsive styling
-    experience.css        # V2 motion, interaction and mobile refinements
+    page.tsx              # Page sections
+    layout.tsx            # Metadata, font preload, and global styles
+    globals.css           # Visual identity and layout
+    experience.css        # V2 motion and interaction refinements
   components/
-    navigation.tsx        # Glass navigation and mobile menu
-    hero.tsx              # Cinematic hero and parallax
-    editorial.tsx         # About, CTA, footer
-    student-life.tsx      # Cinematic photography and layered text
-    programs.tsx          # Program cards and topic details
-    computer-science.tsx  # Interactive computing feature
-    campus.tsx            # Campus photo gallery
-    statistics.tsx        # Demo counters
-    detail-dialog.tsx     # Shared accessible modal
-    motion.tsx            # Reusable viewport reveal
+    navigation.tsx        # Navigation and mobile menu
+    hero.tsx              # Hero entrance and parallax
+    editorial.tsx         # About, call to action, and footer
+    programs.tsx          # Academic cards
+    computer-science.tsx  # Topic tabs and code visualization
+    campus.tsx            # Campus gallery
+    student-life.tsx      # Student experience photography
+    statistics.tsx       # Demo counters
+    detail-dialog.tsx    # Shared native dialog
+    motion.tsx           # Reusable reveals
   lib/
-    content.ts            # Programs, campus photos, topics, DEMO statistics
-    use-media-query.ts    # Hydration-safe viewport and motion preferences
+    content.ts           # Programs, gallery items, topics, and demo data
+    use-media-query.ts   # Viewport and motion preference hooks
 public/
-  images/                 # Replaceable locally optimized photos
-  fonts/                  # Self-hosted Manrope font and license
+  images/                # Local photography
+  fonts/                 # Self-hosted Manrope and font license
 ```
 
-## Replace concept content
+Static editorial sections use Server Components; interactive sections use Client Components. Shared motion helpers keep behavior consistent, while media-query hooks disable ambient photography movement on touch screens and for reduced-motion preferences. Counters use MotionValues without a React render on every animation frame.
 
-1. Replace `public/images/` assets and edit their paths and alt text in `src/lib/content.ts`. The hero photo is set in `src/components/hero.tsx`; the student-life photo is set in `src/components/student-life.tsx`.
-2. `DEMO_STATISTICS` in `content.ts` contains intentionally fictional figures. Every value is labeled as demo data on the page. Replace them only with verified, sourced KIU statistics, then update the visible demo notice appropriately.
-3. Academic areas and topic descriptions are editorial concept content, not a verified program catalogue, curriculum or research-project list.
-4. The Apply button opens KIU's official homepage for current admissions information. It does not imply that this concept processes applications.
-5. See `ASSETS.md` for image provenance. Replace reference photographs with owned or cleared assets before a public portfolio release.
+## Content and image attribution
 
-## Accessibility and motion
+- **Statistics are fictional demo values**, not verified KIU statistics. They are marked in `DEMO_STATISTICS` in `src/lib/content.ts` and visibly labeled on the page.
+- Academic areas and topic descriptions are concept content, not a verified curriculum, program catalogue, or research-project list.
+- The Apply link directs visitors to KIU's official homepage. This project does not collect or process applications.
+- See [ASSETS.md](ASSETS.md) for photography provenance and usage notes. Inclusion in this repository does not grant rights to third-party photographs or university marks. Replace reference photography with owned or cleared assets before reuse in a public portfolio.
+- Replace gallery paths and alt text in `src/lib/content.ts`. Hero and student-life image paths are in their corresponding components.
+- The site carries independent-concept notices and is marked `noindex` to avoid presenting it as an official university service.
 
-Semantic landmarks, a single h1, labelled buttons, visible focus indicators, mobile navigation with `aria-expanded`, native dialogs, Escape dismissal, focus restoration, descriptive image alt text, and `prefers-reduced-motion` support are included. Content is visible in server HTML without waiting for JavaScript. A redundant route loading boundary was removed so this single static page cannot remain behind a spinner when scripts are disabled.
+## V2 validation
 
-The site is intentionally marked `noindex` as a concept. Do not remove the independent-concept notices in any presentation that could imply university endorsement.
+The production export was visually reviewed in desktop and mobile Chrome. Checks covered keyboard tabs, dialogs, focus restoration, mobile navigation, internal links, reduced motion, image decoding, JavaScript-disabled content, and overflow at widths from 320px to 1920px. Lint, TypeScript, formatting, and the production build passed. Automated accessibility scans reported no violations in the five tested page, menu, and dialog states; this is not a claim of exhaustive accessibility or cross-browser certification.
 
-V2 adds ESLint with the Next.js Core Web Vitals and TypeScript rules. TypeScript 6 is pinned for compatibility with the TypeScript ESLint parser; the production UI dependencies are unchanged. The only approved dependency build script is the lint resolver's native-binding setup, recorded in `pnpm-workspace.yaml`.
+## Repository hygiene
+
+Dependencies, generated build output, environment files, local credentials, logs, and editor state are excluded by `.gitignore`. The lockfile is committed for reproducibility. `.openai/hosting.json` contains only the existing static-hosting configuration and project identifier; it contains no credentials.

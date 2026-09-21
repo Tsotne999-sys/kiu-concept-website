@@ -1,7 +1,42 @@
+# Dependencies
 node_modules/
+.pnpm-store/
+
+# Build and generated output
 .next/
 out/
-.sites-runtime/
+dist/
+build/
+coverage/
 *.tsbuildinfo
-.env*
-!.env.example
+next-env.d.ts
+
+# Environment files and local credentials
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+.npmrc
+.netrc
+
+# Local hosting/runtime state
+.sites-runtime/
+.vercel/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor and operating-system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
