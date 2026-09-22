@@ -2,6 +2,8 @@
 
 A cinematic university website concept built with Next.js, React, and TypeScript.
 
+**[Live Demo](https://kiu-future-campus-concept.tsotniko.chatgpt.site/)** — publicly accessible, with no sign-in required.
+
 > **Independent portfolio project.** This is not the official Kutaisi International University (KIU) website. It is not affiliated with, commissioned by, or endorsed by KIU.
 
 ## Overview
